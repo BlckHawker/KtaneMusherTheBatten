@@ -164,8 +164,34 @@ public class MusherTheBattenScript : MonoBehaviour
 					
 			ButtonPressed();
 		}
-			
 	}
+
+    IEnumerator TwitchHandleForcedSolve()
+    {
+		while (_stagesPassed < _stages)
+		{
+            if (_solutionNumber == -1)
+            {
+				_button.OnInteract();
+				yield return new WaitForSeconds(0.1f);
+            }
+
+            else
+            {
+				while (!((int)_info.GetTime() % 60 == _solutionNumber || _info.GetTime() < _solutionNumber))
+                {
+					yield return true;
+				}
+                _button.OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
+
+		while (!_solved)
+		{
+			yield return null;
+		}
+    }
 }
 
 internal class TableBatten
